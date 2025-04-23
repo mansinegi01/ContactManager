@@ -5,8 +5,6 @@ import Login from './components/Login/Login'
 import Signup from './components/Signup/Signup'
 import Home from "./components/Home/Home";
 
-// axios.get('http://localhost:8000/api/transaction')
-
 function App() {
     return (
         <>
