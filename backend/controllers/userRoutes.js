@@ -8,7 +8,16 @@ async function loginUser(req,res) {
     if(!user){
         return res.send("no user found")
     }
-    return res.redirect('/home')
+    return res.json('/home')
+}
+
+async function loginPostUser(req,res) {
+    const {email,password} = req.body;
+    
+    if(!email || !password){
+        return res.send("no user found")
+    }
+    return res.send('/home')
 }
 async function signupUser(req,res) {
     const {fullname,email,password} = req.body;
@@ -25,5 +34,5 @@ async function signupUser(req,res) {
 
 
 module.exports = {
-    loginUser, signupUser
+    loginUser, signupUser, loginPostUser
 }

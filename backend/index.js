@@ -13,9 +13,13 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 //routes
-app.use("/login",)
+app.use("/",routes)
+
 
 
 
 //listen
-app.listen(port)
+app.listen(port,()=>{
+    console.log(`server started`);
+    
+})
