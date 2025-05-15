@@ -12,7 +12,7 @@ function Header() {
             <div className="flex justify-content-center min-h-15 w-2/4 ">
             <ul className="nav  ">
                    
-                <div className="flex p-2 items-center gap-7">
+                <div className="flex p-2 items-center gap-7 ">
                     <Link to="/home" className="link">Home</Link>
                     <div className="border-l-2 border-gray-600 h-4"></div>
                     <Link to="/login" className="link">Login</Link>
