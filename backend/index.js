@@ -3,13 +3,14 @@ const app = express();
 const {connectDB} = require('./connectDB')
 const routes = require('./routes/urlRoutes')
 const cors = require('cors')
+const cookieParser = require("cookie-parser");
+const {authenticatedUser} = require('./middlewares/auth')
 
 const port = process.env.PORT || 8000;
 
 //Cors
 let corsOption = {
     origin : "http://localhost:5173",
-    optionSuccessStatus : 200,
     methods : "GET, POST, PUT, PATCH, DELETE",
     credentials : true
 }
@@ -18,6 +19,7 @@ let corsOption = {
 connectDB("mongodb://127.0.0.1:27017/userData")
 
 //middlewares
+app.use(cookieParser());
 app.use(cors(corsOption))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
