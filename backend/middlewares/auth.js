@@ -5,7 +5,7 @@ function authenticatedUser(req, res, next) {
     
   const userID = req.cookies?.uid;
   if (!userID) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized : please login first" });
   }
 
   const user = getUser(userID);

@@ -33,7 +33,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-blue-200">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-blue-200 homepage">
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-3 gap-8 p-8 max-w-5xl w-full"
         initial="hidden"

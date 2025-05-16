@@ -20,7 +20,10 @@ function Add() {
 
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        setError('please fill all the details!')
+        if(!user.name.trim() || !user.phone.trim()){
+          setError('please fill all the details!')
+        }
+        setError("")
         try {
             const response = await fetch("http://localhost:8000/services/add",{
                 method : "POST",
@@ -30,10 +33,10 @@ function Add() {
                 credentials : "include",
                 body : JSON.stringify(user)
             });
+            const data = await response.json()
             if(response.status === 201){
-                navigate('/home',{
-                    message : "user added!"
-                })
+                alert(data.message)
+                navigate('/home')
             }
             else{
                 alert(data.message || "Invalid credentials");
@@ -41,7 +44,7 @@ function Add() {
             
 
         } catch (error) {
-            
+            console.log("error occured at add service")
         }
     }
 

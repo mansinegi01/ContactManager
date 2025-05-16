@@ -5,7 +5,7 @@ const routes = require('./routes/urlRoutes')
 const cors = require('cors')
 const cookieParser = require("cookie-parser");
 const {authenticatedUser} = require('./middlewares/auth')
-
+const serviceRoutes = require('./routes/servicesRoutes')
 const port = process.env.PORT || 8000;
 
 //Cors
@@ -26,6 +26,7 @@ app.use(express.urlencoded({extended:false}))
 
 //routes
 app.use("/api",routes)
+app.use("/services",authenticatedUser,serviceRoutes)
 
 
 

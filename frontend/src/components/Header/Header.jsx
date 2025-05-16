@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 
 function Header() {
     return (
-        <div className="flex ">
-            <div className="w-1/4 flex place-items-center">
-                logo
-            </div>
+        <div className="flex justify-center ">
+            
 
-            <div className="flex justify-content-center min-h-15 w-2/4 ">
+            <div className="flex justify-content-center min-h-15 w-1/4 border-b border-gray-700">
             <ul className="nav  ">
                    
                 <div className="flex p-2 items-center gap-7 ">
