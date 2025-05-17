@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require("uuid");
 const userDetails = require("../models/user");
 const { setUser } = require("../services/auth");
 
@@ -9,9 +8,8 @@ async function loginPostUser(req, res) {
   if (!user) {
     return res.status(404).json({ message: "user not found" });
   }
-  const sessionID = uuidv4();
-  setUser(sessionID,user)
-  res.cookie("uid", sessionID,{
+  const token = setUser(user)
+  res.cookie("uid", token,{
     httpOnly: true,
   secure: false, 
   sameSite: "Lax", 

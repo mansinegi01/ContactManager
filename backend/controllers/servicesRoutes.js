@@ -42,7 +42,7 @@ async function View_all(req, res) {
   })
   } catch (error) {
     
-    return res.status(200).json({message : "error occured at view_all"})
+    return res.status(500).json({message : "Please login first"})
   }
   
 }
