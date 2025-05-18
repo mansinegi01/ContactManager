@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom"
 function Add() {
   const [user, setUser] = useState({
     name: "",
-    phone: ""
+    phone: "", 
+    profileImage: ""
   });
   const [error, setError] = useState("")
   const [profileImage, setProfileImage] = useState(null)
@@ -21,25 +22,30 @@ function Add() {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setUploading(true);
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "unsigned_preset");
-
-    }
+    if (!file) return
     try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/user_profile_images/upload",{
-        method : "POSt",
-        body : "formData"
+      setUploading(true)
+      const data = new FormData()
+      data.append("file", file)
+      data.append("upload_preset", "user_profile_images")
+      data.append("cloud_name", "dbvtihfoh")
+
+      const response = await fetch("https://api.cloudinary.com/v1_1/dbvtihfoh/image/upload", {
+        method: "POST",
+        body: data,
       })
-      const data = await response.json()
-      setProfileImage(data.secure_url)
-      setUploading(false)
+      const uploadedImage = await response.json();
+      setProfileImage(uploadedImage.url)
+      
+
     } catch (error) {
       console.log(error)
     }
+    finally {
+      setUploading(false)
+
+    }
+
   }
   const navigate = useNavigate();
 
@@ -56,7 +62,7 @@ function Add() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(user)
+        body: JSON.stringify({ ...user, profileImage })
       });
       const data = await response.json()
       if (response.status === 201) {
@@ -101,6 +107,9 @@ function Add() {
                 +
               </div>
             )}
+            {
+              uploading ? "uploading" : ""
+            }
             <input
               type="file"
               accept="image/*"

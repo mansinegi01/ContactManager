@@ -10,6 +10,10 @@ const userSchema = mongoose.Schema({
         type : Number,
         require : true,
         unique : true,
+    },
+    profileImage : {
+        type : String,
+        default : "/public/download.png"
     }
 })
 

@@ -1,12 +1,14 @@
 const { servicesModel } = require("../models/services");
 
 async function Add(req, res) {
-  const { name, phone } = req.body;
+  const { name, phone, profileImage } = req.body;
 
   try {
     await servicesModel.create({
       name,
       phone,
+      profileImage
+
     });
     return res.status(201).json({message : "new entry created"})
   } catch (error) {
