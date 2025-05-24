@@ -16,7 +16,9 @@ function View_all() {
   }
   const handleChat = (e,contact) => {
     e.preventDefault()
-    navigate(`/chat/${contact._id}`)
+    navigate(`/chat/${contact._id}`,{
+      state : contact
+    })
   }
 
 
@@ -65,7 +67,7 @@ function View_all() {
             <tr key={contact._id} className="flex justify-center border-b ">
               <td className="p-2 w-1/3 border-2 border-gray-400 flex items-center space-x-2">
                 <img
-                  src={contact.profileImage || "../pubic/download.png"}
+                  src={contact.profileImage || "../public/download.png"}
                   alt={contact.name}
                   className="w-10 h-10 rounded-full object-cover border"
                 />

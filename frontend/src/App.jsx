@@ -7,7 +7,7 @@ import Home from "./components/Home/Home";
 import Add from "./components/service/Add";
 import Remove from "./components/service/Remove";
 import View_all from "./components/service/ViewAll";
-import Chat from "./components/service/chat";
+import Chat from "./components/service/Chat";
 import GetStarted from "./components/service/GetStarted";
 
 

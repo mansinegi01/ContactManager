@@ -1,70 +1,101 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 function Chat() {
     const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
     const [contact, setContact] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const location = useLocation();
+    const socketRef = useRef(null);
 
-
-
+    // Set up socket
     useEffect(() => {
+        socketRef.current = io("http://localhost:8000");
+        socketRef.current.on("receive-message", (msg) => {
+            setMessages((prev) => [...prev, msg]);
+        });
+
+        return () => {
+            socketRef.current.disconnect();
+        };
+    }, []);
+
+    // Fetch contact
+    useEffect(() => {
+        // const fetchChats = async() =>{
+        //     const res = await axios(`http://localhost:8000/chat/${id}`,{
+        //         withCredentials : true
+        //     })
+        //     if(res.status === 200){
+        //         setContact(res.data.data)
+        //     }
+        // }
+        const fetchContact = async () => {
+            try {
+                const res = await axios.get(`http://localhost:8000/services/contact/${id}`, {
+                    withCredentials: true,
+                });
+                if (res.status === 200 && res.data.data) {
+                    setContact(res.data.data);
+                }
+            } catch (err) {
+                console.error("Error fetching contact:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (location.state) {
             setContact(location.state);
             setLoading(false);
         } else {
-            const fetchContact = async () => {
-                try {
-                    const res = await axios.get(`http://localhost:8000/services/contact/${id}`, {
-                        withCredentials: true,
-                    });
-
-                    if (res.status === 200 && res.data.data) {
-                        setContact(res.data.data);
-                    } else {
-                        console.error("Contact not found");
-                    }
-                } catch (err) {
-                    console.error("Error fetching contact:", err);
-                } finally {
-                    setLoading(false);
-                }
-            };
-
             fetchContact();
         }
     }, [id, location.state]);
 
-    if (loading) return <p className="p-4">Loading...</p>;
+    const handleSendMessage = () => {
+        if (message.trim()) {
+            const msgObj = {
+                sender: contact.name,
+                message: message,
+            };
+            socketRef.current.emit("send-message", msgObj);
+            setMessages((prev) => [...prev, msgObj]);
+            setMessage("");
+        }
+    };
 
-    if (!contact) {
-        return (
-            <div className="p-4 text-red-600">
-                Contact not found. Please go back to the contact list.
-            </div>
-        );
-    }
+    if (loading) return <p className="p-4">Loading...</p>;
+    if (!contact) return <div className="p-4 text-red-600">Contact not found.</div>;
 
     return (
-        <div className="w-full h-full flex flex-col p-0.5 absolute">
-            <div className=" p-4 rounded-lg mb-4 relative w-full h-1/6 flex gap-7 ">
-                <img src={contact.profileImage || "../public/download.png"} alt="" className="w-10 h-10 border-0 rounded-full" />
-                <p className="text-xl font-bold mt-1">{contact.name}</p>
-
+        <div className="w-full h-screen flex flex-col p-2 ">
+            <div className="p-1 flex items-center gap-4  w-full h-1/6">
+                <img src={contact.profileImage || "/download.png"} alt="" className="w-10 h-10 rounded-full" />
+                <p className="text-xl font-bold">{contact.name}</p>
             </div>
 
-            <div className="flex gap-1 justify-center  items-center absolute bottom-3 w-full h-12">
+            <div className=" bg-gray-500 rounded-xl mb-4 w-full h-5/6">
+                {messages.map((msg, idx) => (
+                    <div key={idx} className="m-2 p-2 bg-white rounded shadow">
+                        <strong>{msg.sender}:</strong> {msg.message}
+                    </div>
+                ))}
+            </div>
+
+            <div className="flex gap-2 w-full h-15">
                 <input
-                    type="text"
+                    type="textarea"
                     placeholder="Type a message..."
-                    className="flex-1 border p-2 rounded "
+                    className="flex-1 p-2 rounded border"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                 />
-                <button className="bg-indigo-600 text-white px-2 py-2 rounded">
+                <button onClick={handleSendMessage} className="bg-indigo-600 text-white px-4 py-2 rounded">
                     Send
                 </button>
             </div>
