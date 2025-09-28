@@ -52,7 +52,7 @@ function View_all() {
 
   return (
     <div className="p-6 flex flex-col justify-center items-center">
-      <h1 className="text-2xlDa font-bold mb-4">All Contacts</h1>
+      <h1 className="text-2xl font-bold mb-4">All Contacts</h1>
 
       <table className="w-full border-collapse">
         <thead className="bg-gray-100">

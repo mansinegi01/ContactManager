@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { io } from "socket.io-client";
 
 function Chat() {
     const [message, setMessage] = useState("");
@@ -10,30 +9,11 @@ function Chat() {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const location = useLocation();
-    const socketRef = useRef(null);
+   
 
-    // Set up socket
+    
     useEffect(() => {
-        socketRef.current = io("http://localhost:8000");
-        socketRef.current.on("receive-message", (msg) => {
-            setMessages((prev) => [...prev, msg]);
-        });
-
-        return () => {
-            socketRef.current.disconnect();
-        };
-    }, []);
-
-    // Fetch contact
-    useEffect(() => {
-        // const fetchChats = async() =>{
-        //     const res = await axios(`http://localhost:8000/chat/${id}`,{
-        //         withCredentials : true
-        //     })
-        //     if(res.status === 200){
-        //         setContact(res.data.data)
-        //     }
-        // }
+    
         const fetchContact = async () => {
             try {
                 const res = await axios.get(`http://localhost:8000/services/contact/${id}`, {

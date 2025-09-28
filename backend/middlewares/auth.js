@@ -1,6 +1,6 @@
 const { getUser } = require("../services/auth");
 
-function authenticatedUser(req, res, next) {
+async function authenticatedUser(req, res, next) {
     console.log(req.cookies);
     
   const userID = req.cookies?.uid;
@@ -8,7 +8,7 @@ function authenticatedUser(req, res, next) {
     return res.status(401).json({ message: "Unauthorized : please login first" });
   }
 
-  const user = getUser(userID);
+  const user = await getUser(userID);
   if (!user) {
     return res.status(401).json({ message: "cookie not found" });
   }

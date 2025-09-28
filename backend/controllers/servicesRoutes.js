@@ -7,7 +7,7 @@ async function Add(req, res) {
     await servicesModel.create({
       name,
       phone,
-      profileImage
+      profileImage,
 
     });
     return res.status(201).json({message : "new entry created"})
@@ -33,7 +33,7 @@ async function Remove(req, res) {
 }
 
 async function View_all(req, res) {
-  const users = await servicesModel.find({})
+  const users = await servicesModel.find()
   try {
     if(!users || users.length === 0){
     return res.status(404).json({message : "Empty data"})

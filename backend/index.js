@@ -6,34 +6,6 @@ const cors = require('cors')
 const cookieParser = require("cookie-parser");
 const {authenticatedUser} = require('./middlewares/auth')
 const serviceRoutes = require('./routes/servicesRoutes')
-const http = require("http")
-const {Server} = require("socket.io")
-
-const server = http.createServer(app)
-const io = new Server(server,{
-    cors : {
-        origin : "http://localhost:5173",
-        methods : "GET, POST",
-        credentials : true
-    }
-})
-io.on("connection", (socket) => {
-
-    socket.on("send-message", (msg) => {
-
-        const chatModel = require("./models/chat");
-        chatModel.create(msg);
-
-        // Broadcast message to other clients
-        socket.broadcast.emit("receive-message", msg);
-    });
-
-    socket.on("disconnect", () => {
-        console.log("user disconnected", socket.id);
-    });
-});
-
-
 
 const port = process.env.PORT || 8000;
 
@@ -59,20 +31,11 @@ app.use("/api",routes)
 app.use("/services",authenticatedUser,serviceRoutes)
 
 
-//chat routes
-// router.get("/chat/:id", authenticatedUser, async (req, res) => {
-//     try {
-//         const messages = await chat.find(); // filter by contact ID if needed
-//         res.status(200).json({ data: messages });
-//     } catch (error) {
-//         res.status(500).json({ message: "Failed to fetch chat" });
-//     }
-// });
 
 
 
 //listen
-server.listen(port,()=>{
+app.listen(port,()=>{
     console.log(`server started`);
     
 })
