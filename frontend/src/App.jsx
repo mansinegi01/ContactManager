@@ -15,6 +15,7 @@ function App() {
     return (
         <>
         <Routes>
+
             <Route path='/' element={<Layout />}>
                 <Route path='' element={<GetStarted/>}/>
                 <Route path='home' element={<Home/>}/>
@@ -25,6 +26,7 @@ function App() {
                 <Route path='view_all' element={<View_all />} />
                 <Route path='chat/:id' element={<Chat />} />
             </Route>
+            
         </Routes>
         </>
     )
