@@ -48,6 +48,7 @@ export default function Home() {
             onClick={action.onClick}
           >
             <div className="text-indigo-600">{action.icon}</div>
+            
             <h3 className="text-lg font-semibold text-gray-700">{action.title}</h3>
           </motion.div>
         ))}
