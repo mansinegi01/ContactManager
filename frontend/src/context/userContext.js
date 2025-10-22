@@ -11,6 +11,7 @@ const userContext = createContext({Children})=>{
                     "Content-Type" : "application/json"
                 },
                 body : JSON.stringify(user)
+                
             })
         } catch (error) {
             
