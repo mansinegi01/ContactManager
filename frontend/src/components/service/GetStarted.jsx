@@ -1,39 +1,74 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-import {motion} from "framer-motion"
-import { useNavigate } from "react-router-dom"
-export default function GetStarted(){
-    const navigate = useNavigate()
-    return (
-        <>
-            <div className="flex justify-center items-center w-full h-full">
-        <motion.div
-          className="bg-white rounded-3xl shadow-2xl p-10 max-w-3xl w-full text-center"
-          initial={{ opacity: 0, scale: 0.9, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          <h1 className="text-4xl font-extrabold text-indigo-600 mb-4">
-            Welcome to Connectify ✨
-          </h1>
-          <p className="text-gray-600 text-lg mb-6">
-            Your personal contact manager — securely store, manage, and chat with your contacts effortlessly.
-          </p>
+function Header() {
+  const [isOpen, setIsOpen] = useState(false);
 
-          <img
-            src="https://cdn.dribbble.com/users/1162077/screenshots/3848914/media/7ed7a5b3f5ce694fcf8c4291e5baf5c8.gif"
-            alt="People connecting"
-            className="mx-auto w-72 rounded-xl shadow-md mb-6"
-          />
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signup")}
-            className="bg-indigo-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-indigo-700 transition-all"
-          >
-            Get Started
-          </motion.button>
-        </motion.div>
+  return (
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-gray-900 via-indigo-500 to-cyan-500 p-4 shadow-lg z-50 flex items-center justify-between">
+      {/* Logo (clickable) */}
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={toggleMenu} // click logo to open/close menu
+      >
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/888/888879.png"
+          alt="logo"
+          className="w-10 h-10"
+        />
+        <h1 className="text-white text-xl font-bold">Health Monitor</h1>
       </div>
-        </>
-    )
+
+      {/* Hamburger */}
+      <div
+        className="flex flex-col justify-between w-8 h-6 cursor-pointer md:hidden"
+        onClick={toggleMenu} // click hamburger to open/close menu
+      >
+        <span
+          className={`h-1 w-full bg-white rounded transition-all duration-300 ${
+            isOpen ? "rotate-45 translate-y-2.5" : ""
+          }`}
+        ></span>
+        <span
+          className={`h-1 w-full bg-white rounded transition-all duration-300 ${
+            isOpen ? "opacity-0" : ""
+          }`}
+        ></span>
+        <span
+          className={`h-1 w-full bg-white rounded transition-all duration-300 ${
+            isOpen ? "-rotate-45 -translate-y-2.5" : ""
+          }`}
+        ></span>
+      </div>
+
+      {/* Horizontal Dropdown Menu */}
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: isOpen ? "auto" : 0 }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="absolute top-0 right-0 h-full bg-gray-900 text-white flex items-center gap-6 overflow-hidden px-4"
+      >
+        <Link to="/home" onClick={toggleMenu} className="hover:text-yellow-300">
+          Home
+        </Link>
+        <Link to="/about" onClick={toggleMenu} className="hover:text-yellow-300">
+          About
+        </Link>
+        <Link to="/contact" onClick={toggleMenu} className="hover:text-yellow-300">
+          Contact
+        </Link>
+        <Link to="/login" onClick={toggleMenu} className="hover:text-yellow-300">
+          Login
+        </Link>
+        <Link to="/signup" onClick={toggleMenu} className="hover:text-yellow-300">
+          Signup
+        </Link>
+      </motion.div>
+    </header>
+  );
 }
+
+export default Header;

@@ -14,11 +14,28 @@ function View_all() {
     }))
 
   }
-  const handleChat = (e,contact) => {
+  const handleChat = async(e) => {
     e.preventDefault()
-    navigate(`/chat/${contact._id}`,{
-      state : contact
-    })
+    // navigate(`/chat/${contact._id}`,{
+    //   state : contact
+    // })
+    try {
+      const res = await axios.put("http://localhost:8000/services/edit",{
+        withCredentials: true
+      })
+      if(res.status == 200){
+        alert("updated contact sucessfully!")
+      }
+    } catch (error) {
+      console.error("Cookies not generated", error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert("An unexpected error occurred");
+        }
+        navigate('/home')
+    }
+
   }
 
 

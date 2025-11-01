@@ -49,7 +49,27 @@ async function View_all(req, res) {
   
 }
 
+async function Update(req,res) {
+  try {
+    const {id} = req.params;
+    const {name, phone} = req.body;
+    const updateContact = await servicesModel.findByIdAndUpdate(
+      id = req.id,
+      {name, phone},
+      { new: true, runValidators: true }
+    );
+     if (!updatedContact) {
+      return res.status(404).json({ message: "Contact not found" });
+    }
+
+    res.status(200).json(updateContact);
+  } catch (error) {
+     console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
 
 module.exports = {
-    Add, Remove, View_all
+    Add, Remove, View_all, Update
 }
